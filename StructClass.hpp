@@ -15,10 +15,12 @@ class StructClass {
         StructClass(const std::string &, bool, const std::string &, const std::vector<std::string> &);
         ~StructClass();
 
+        void setStructName();
+        void setNameMember(const std::string &);
     protected:
         std::string _structName;
-        std::string _typedefName;
         bool _hasTypedef;
+        std::string _typedefName;
         std::vector<std::string> _type;
 };
 
