@@ -43,7 +43,6 @@ class Project {
         void askTestFunction(QMainWindow *, const QString &);
         void askTestFile(QMainWindow *, QString, QString file, QString value);
         void rejected(QMainWindow *);
-//        void addTestNewFile();
         void addTestExistFile(QMainWindow *, QString, QString file);
         void askTestParams(QMainWindow *);
         Interpreter _interp;

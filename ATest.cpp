@@ -11,7 +11,8 @@ ATest::ATest(const std::string &proto, const std::string &filePath, QMainWindow 
 {
 //    std::string tmpName;
     initType();
-    calcFunctionName( proto);
+    calcFunctionName(proto);
+    calcArguments(proto);
     try {
         askType();
         if (_type == "Manual") {
@@ -20,6 +21,7 @@ ATest::ATest(const std::string &proto, const std::string &filePath, QMainWindow 
         }
         checkValidType();
         askForArgs();
+        std::cout << "hello"<< std::endl;
         if (_type == "Stream") {
             checkStream();
         } else {
@@ -151,7 +153,8 @@ void ATest::generateFile()
 
     if (!file.is_open()) {
         std::cout << _filePath << std::endl;
-//        exit(84);
+        std::cout << "error " << std::endl;
+        return;
     }
     file << "Test (" << "Test" + _funcName  << ", " << _testName  << ") {" << std::endl;
     for (const auto &e: _argsValue) {
@@ -239,6 +242,7 @@ void ATest::askForArgs()
 
     _testName = QInputDialog::getText(_win, "Test name", "Enter test Name").toUtf8().constData();
     for (const auto &e: _argsType) {
+        std::cout << " ------------------------------------------------------" + e << std::endl;
         if (i == 0 && (_functionType.find("void") == _functionType.npos || _type == "Stream")) {
             if (_functionType.find("int") != e.npos) {
                 result = QString::number(QInputDialog::getInt(_win, "Args", QString("Enter expected value")));
@@ -268,7 +272,7 @@ void ATest::askForArgs()
             throw Errors::DirectoryError("Value not entered", "");
         std::string value = e + " var" + std::to_string(i++);
         if (value.find("char") != value.npos && (value.find("*") != value.npos || value.find("[") != value.npos))
-            _argsValue[value] = std::string("\"") +  result.toUtf8().constData() + "\"";
+            _argsValue[value] = std::string("strdup(\"") +  result.toUtf8().constData() + "\")";
         else if (value.find("char") != value.npos) {
             _argsValue[value] = std::string("'") +  result.toUtf8().constData() + "'";
         } else
